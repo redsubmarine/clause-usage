@@ -90,10 +90,10 @@ func generateDailyTable(dailyResp *DailyResponse) string {
 
 	// Totals row
 	result.WriteString(fmt.Sprintf("│ Total      │               │ %9s │ %9s │ %13s │ %11s │ %13s │ %11s │\n",
-		formatNumber(dailyResp.Totals.TotalInputTokens),
-		formatNumber(dailyResp.Totals.TotalOutputTokens),
-		formatNumber(dailyResp.Totals.TotalCacheCreationTokens),
-		formatNumber(dailyResp.Totals.TotalCacheReadTokens),
+		formatNumber(dailyResp.Totals.InputTokens),
+		formatNumber(dailyResp.Totals.OutputTokens),
+		formatNumber(dailyResp.Totals.CacheCreationTokens),
+		formatNumber(dailyResp.Totals.CacheReadTokens),
 		formatNumber(dailyResp.Totals.TotalTokens),
 		formatCost(dailyResp.Totals.TotalCost),
 	))

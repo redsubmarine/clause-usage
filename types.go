@@ -20,12 +20,12 @@ type DailyData struct {
 
 // DailySummary represents the summary of daily data
 type DailySummary struct {
-	TotalInputTokens         int     `json:"totalInputTokens"`
-	TotalOutputTokens        int     `json:"totalOutputTokens"`
-	TotalCacheCreationTokens int     `json:"totalCacheCreationTokens"`
-	TotalCacheReadTokens     int     `json:"totalCacheReadTokens"`
-	TotalTokens              int     `json:"totalTokens"`
-	TotalCost                float64 `json:"totalCost"`
+	InputTokens         int     `json:"inputTokens"`
+	OutputTokens        int     `json:"outputTokens"`
+	CacheCreationTokens int     `json:"cacheCreationTokens"`
+	CacheReadTokens     int     `json:"cacheReadTokens"`
+	TotalTokens         int     `json:"totalTokens"`
+	TotalCost           float64 `json:"totalCost"`
 }
 
 // MonthlyResponse represents the response from ccusage monthly --json
