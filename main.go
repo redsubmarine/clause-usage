@@ -51,8 +51,7 @@ func runTest() {
 }
 
 func onReady() {
-	// Set icon (you can use any icon file)
-	systray.SetIcon(getIcon())
+	// Set title and tooltip (skip icon for now)
 	systray.SetTitle("Claude Usage")
 	systray.SetTooltip("Claude Usage Monitor")
 
@@ -134,8 +133,8 @@ func showMonthlyData() {
 }
 
 // getIcon returns a simple icon (you can replace with actual icon file)
-func getIcon() []byte {
-	// Return a simple 16x16 icon data
-	// For now, return empty to use default icon
-	return []byte{}
-}
+// func getIcon() []byte {
+// 	// Return a simple 16x16 icon data
+// 	// For now, return empty to use default icon
+// 	return []byte{}
+// }
