@@ -2,21 +2,20 @@ package main
 
 // DailyResponse represents the response from ccusage daily --json
 type DailyResponse struct {
-	Type    string       `json:"type"`
-	Data    []DailyData  `json:"data"`
-	Summary DailySummary `json:"summary"`
+	Daily  []DailyData  `json:"daily"`
+	Totals DailySummary `json:"totals"`
 }
 
 // DailyData represents a single day's usage data
 type DailyData struct {
 	Date                string   `json:"date"`
-	Models              []string `json:"models"`
+	ModelsUsed          []string `json:"modelsUsed"`
 	InputTokens         int      `json:"inputTokens"`
 	OutputTokens        int      `json:"outputTokens"`
 	CacheCreationTokens int      `json:"cacheCreationTokens"`
 	CacheReadTokens     int      `json:"cacheReadTokens"`
 	TotalTokens         int      `json:"totalTokens"`
-	CostUSD             float64  `json:"costUSD"`
+	TotalCost           float64  `json:"totalCost"`
 }
 
 // DailySummary represents the summary of daily data

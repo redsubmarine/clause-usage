@@ -44,7 +44,7 @@ func getMonthlyUsage() (*MonthlyResponse, error) {
 func getTodayData(dailyResp *DailyResponse) (*DailyData, error) {
 	today := time.Now().Format("2006-01-02")
 
-	for _, data := range dailyResp.Data {
+	for _, data := range dailyResp.Daily {
 		if data.Date == today {
 			return &data, nil
 		}

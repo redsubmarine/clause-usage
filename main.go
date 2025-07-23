@@ -36,7 +36,7 @@ func runTest() {
 		fmt.Printf("Today (%s): %s - %s\n",
 			todayData.Date,
 			formatTokens(todayData.TotalTokens),
-			formatCost(todayData.CostUSD))
+			formatCost(todayData.TotalCost))
 	}
 
 	// Test monthly data
@@ -115,7 +115,7 @@ func updateMenuBar() {
 	// Format title for menu bar
 	title := fmt.Sprintf("%s - %s",
 		formatTokens(todayData.TotalTokens),
-		formatCost(todayData.CostUSD))
+		formatCost(todayData.TotalCost))
 
 	systray.SetTitle(title)
 }
