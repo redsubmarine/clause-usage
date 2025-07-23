@@ -3,13 +3,51 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/getlantern/systray"
 )
 
 func main() {
+	// Check if test mode
+	if len(os.Args) > 1 && os.Args[1] == "test" {
+		runTest()
+		return
+	}
+
 	systray.Run(onReady, onExit)
+}
+
+func runTest() {
+	fmt.Println("Testing ccusage data...")
+
+	// Test daily data
+	fmt.Println("\n=== Daily Data ===")
+	dailyResp, err := getDailyUsage()
+	if err != nil {
+		log.Fatalf("Error getting daily usage: %v", err)
+	}
+
+	todayData, err := getTodayData(dailyResp)
+	if err != nil {
+		log.Printf("Error getting today's data: %v", err)
+	} else {
+		fmt.Printf("Today (%s): %s - %s\n",
+			todayData.Date,
+			formatTokens(todayData.TotalTokens),
+			formatCost(todayData.CostUSD))
+	}
+
+	// Test monthly data
+	fmt.Println("\n=== Monthly Data ===")
+	monthlyResp, err := getMonthlyUsage()
+	if err != nil {
+		log.Fatalf("Error getting monthly usage: %v", err)
+	}
+
+	table := generateMonthlyTable(monthlyResp)
+	fmt.Println(table)
 }
 
 func onReady() {
