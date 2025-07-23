@@ -57,6 +57,8 @@ func onReady() {
 	systray.SetTooltip("Claude Usage Monitor")
 
 	// Add menu items
+	mShowMonthly := systray.AddMenuItem("Show Monthly Data", "Show monthly usage table")
+	systray.AddSeparator()
 	mRefresh := systray.AddMenuItem("Refresh", "Refresh data")
 	systray.AddSeparator()
 	mQuit := systray.AddMenuItem("Quit", "Quit the application")
@@ -68,6 +70,8 @@ func onReady() {
 	go func() {
 		for {
 			select {
+			case <-mShowMonthly.ClickedCh:
+				go showMonthlyData()
 			case <-mRefresh.ClickedCh:
 				go updateMenuBar()
 			case <-mQuit.ClickedCh:
@@ -115,6 +119,18 @@ func updateMenuBar() {
 		formatCost(todayData.CostUSD))
 
 	systray.SetTitle(title)
+}
+
+func showMonthlyData() {
+	monthlyResp, err := getMonthlyUsage()
+	if err != nil {
+		log.Printf("Error getting monthly usage: %v", err)
+		return
+	}
+
+	table := generateMonthlyTable(monthlyResp)
+	fmt.Println("\n=== Monthly Usage Data ===")
+	fmt.Println(table)
 }
 
 // getIcon returns a simple icon (you can replace with actual icon file)
