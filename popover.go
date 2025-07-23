@@ -19,7 +19,36 @@ func showPopover() {
 	table := generateMonthlyTable(monthlyResp)
 
 	// Create a temporary file with the table content
-	tmpFile, err := os.CreateTemp("", "claude-usage-*.txt")
+	tmpFile, err := os.CreateTemp("", "claude-usage-monthly-*.txt")
+	if err != nil {
+		log.Printf("Error creating temp file: %v", err)
+		return
+	}
+	defer os.Remove(tmpFile.Name())
+
+	// Write table to temp file
+	if _, err := tmpFile.WriteString(table); err != nil {
+		log.Printf("Error writing to temp file: %v", err)
+		return
+	}
+	tmpFile.Close()
+
+	// Open the file with TextEdit in a small window
+	openPopover(tmpFile.Name())
+}
+
+// showDailyPopover displays daily data in a popover window
+func showDailyPopover() {
+	dailyResp, err := getDailyUsage()
+	if err != nil {
+		log.Printf("Error getting daily usage: %v", err)
+		return
+	}
+
+	table := generateDailyTable(dailyResp)
+
+	// Create a temporary file with the table content
+	tmpFile, err := os.CreateTemp("", "claude-usage-daily-*.txt")
 	if err != nil {
 		log.Printf("Error creating temp file: %v", err)
 		return

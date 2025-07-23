@@ -54,6 +54,54 @@ func generateMonthlyTable(monthlyResp *MonthlyResponse) string {
 	return result.String()
 }
 
+// generateDailyTable generates a formatted table from daily data
+func generateDailyTable(dailyResp *DailyResponse) string {
+	if len(dailyResp.Daily) == 0 {
+		return "No daily data available"
+	}
+
+	// Sort daily data by date (newest first)
+	sort.Slice(dailyResp.Daily, func(i, j int) bool {
+		return dailyResp.Daily[i].Date > dailyResp.Daily[j].Date
+	})
+
+	var result strings.Builder
+
+	// Header
+	result.WriteString("┌────────────┬───────────────┬───────────┬───────────┬───────────────┬─────────────┬───────────────┬─────────────┐\n")
+	result.WriteString("│ Date       │ Models        │     Input │    Output │  Cache Create │  Cache Read │  Total Tokens │  Cost (USD) │\n")
+	result.WriteString("├────────────┼───────────────┼───────────┼───────────┼───────────────┼─────────────┼───────────────┼─────────────┤\n")
+
+	// Daily data rows
+	for _, data := range dailyResp.Daily {
+		models := formatModelNames(data.ModelsUsed)
+		result.WriteString(fmt.Sprintf("│ %-10s │ %-13s │ %9s │ %9s │ %13s │ %11s │ %13s │ %11s │\n",
+			data.Date,
+			truncateString(models, 13),
+			formatNumber(data.InputTokens),
+			formatNumber(data.OutputTokens),
+			formatNumber(data.CacheCreationTokens),
+			formatNumber(data.CacheReadTokens),
+			formatNumber(data.TotalTokens),
+			formatCost(data.TotalCost),
+		))
+		result.WriteString("├────────────┼───────────────┼───────────┼───────────┼───────────────┼─────────────┼───────────────┼─────────────┤\n")
+	}
+
+	// Totals row
+	result.WriteString(fmt.Sprintf("│ Total      │               │ %9s │ %9s │ %13s │ %11s │ %13s │ %11s │\n",
+		formatNumber(dailyResp.Totals.TotalInputTokens),
+		formatNumber(dailyResp.Totals.TotalOutputTokens),
+		formatNumber(dailyResp.Totals.TotalCacheCreationTokens),
+		formatNumber(dailyResp.Totals.TotalCacheReadTokens),
+		formatNumber(dailyResp.Totals.TotalTokens),
+		formatCost(dailyResp.Totals.TotalCost),
+	))
+	result.WriteString("└────────────┴───────────────┴───────────┴───────────┴───────────────┴─────────────┴───────────────┴─────────────┘\n")
+
+	return result.String()
+}
+
 // truncateString truncates string to specified length
 func truncateString(s string, maxLen int) string {
 	if len(s) <= maxLen {

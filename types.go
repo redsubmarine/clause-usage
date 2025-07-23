@@ -25,7 +25,7 @@ type DailySummary struct {
 	TotalCacheCreationTokens int     `json:"totalCacheCreationTokens"`
 	TotalCacheReadTokens     int     `json:"totalCacheReadTokens"`
 	TotalTokens              int     `json:"totalTokens"`
-	TotalCostUSD             float64 `json:"totalCostUSD"`
+	TotalCost                float64 `json:"totalCost"`
 }
 
 // MonthlyResponse represents the response from ccusage monthly --json

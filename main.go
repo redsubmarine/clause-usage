@@ -39,6 +39,11 @@ func runTest() {
 			formatCost(todayData.TotalCost))
 	}
 
+	// Test daily table
+	fmt.Println("\n=== Daily Table ===")
+	dailyTable := generateDailyTable(dailyResp)
+	fmt.Println(dailyTable)
+
 	// Test monthly data
 	fmt.Println("\n=== Monthly Data ===")
 	monthlyResp, err := getMonthlyUsage()
@@ -56,6 +61,7 @@ func onReady() {
 	systray.SetTooltip("Claude Usage Monitor")
 
 	// Add menu items
+	mShowDaily := systray.AddMenuItem("Show Daily Data", "Show daily usage table")
 	mShowMonthly := systray.AddMenuItem("Show Monthly Data", "Show monthly usage table")
 	systray.AddSeparator()
 	mRefresh := systray.AddMenuItem("Refresh", "Refresh data")
@@ -69,6 +75,8 @@ func onReady() {
 	go func() {
 		for {
 			select {
+			case <-mShowDaily.ClickedCh:
+				go showDailyData()
 			case <-mShowMonthly.ClickedCh:
 				go showMonthlyData()
 			case <-mRefresh.ClickedCh:
@@ -118,6 +126,10 @@ func updateMenuBar() {
 		formatCost(todayData.TotalCost))
 
 	systray.SetTitle(title)
+}
+
+func showDailyData() {
+	showDailyPopover()
 }
 
 func showMonthlyData() {
