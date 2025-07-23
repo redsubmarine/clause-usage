@@ -121,15 +121,7 @@ func updateMenuBar() {
 }
 
 func showMonthlyData() {
-	monthlyResp, err := getMonthlyUsage()
-	if err != nil {
-		log.Printf("Error getting monthly usage: %v", err)
-		return
-	}
-
-	table := generateMonthlyTable(monthlyResp)
-	fmt.Println("\n=== Monthly Usage Data ===")
-	fmt.Println(table)
+	showPopover()
 }
 
 // getIcon returns a simple icon (you can replace with actual icon file)
