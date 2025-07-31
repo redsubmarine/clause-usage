@@ -14,9 +14,29 @@ macOS 메뉴바에서 Claude 사용량을 실시간으로 확인할 수 있는 G
 - Go 1.21+
 - ccusage CLI (설치되어 있어야 함)
 
-## 설치 및 실행
+## 설치
+
+### 원클릭 설치 (권장)
 
 ```bash
+curl -fsSL https://raw.githubusercontent.com/redsubmarine/clause-usage/main/install.sh | bash
+```
+
+### 수동 설치
+
+```bash
+curl -L https://github.com/redsubmarine/clause-usage/releases/download/v1.0.0/claude-usage-macos-arm64 -o claude-usage && chmod +x claude-usage && sudo mv claude-usage /usr/local/bin/
+```
+
+설치 후 터미널에서 `claude-usage` 명령으로 실행하거나, Finder에서 애플리케이션을 찾아 실행할 수 있습니다.
+
+### 개발자 설치
+
+```bash
+# 소스코드 다운로드
+git clone https://github.com/redsubmarine/clause-usage.git
+cd clause-usage
+
 # 개발 모드로 실행
 go run .
 
