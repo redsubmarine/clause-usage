@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"time"
@@ -9,12 +10,18 @@ import (
 	"github.com/getlantern/systray"
 )
 
+var testMode bool
+
 func main() {
 	// Check if test mode
 	if len(os.Args) > 1 && os.Args[1] == "test" {
+		testMode = true
 		runTest()
 		return
 	}
+
+	// Disable logging for normal operation (run silently in background)
+	log.SetOutput(io.Discard)
 
 	systray.Run(onReady, onExit)
 }
@@ -108,15 +115,19 @@ func onExit() {
 func updateMenuBar() {
 	dailyResp, err := getDailyUsage()
 	if err != nil {
-		log.Printf("Error getting daily usage: %v", err)
-		systray.SetTitle("Error")
+		if testMode {
+			log.Printf("Error getting daily usage: %v", err)
+		}
+		systray.SetTitle("Claude Usage")
 		return
 	}
 
 	todayData, err := getTodayData(dailyResp)
 	if err != nil {
-		log.Printf("Error getting today's data: %v", err)
-		systray.SetTitle("No data")
+		if testMode {
+			log.Printf("Error getting today's data: %v", err)
+		}
+		systray.SetTitle("Claude Usage")
 		return
 	}
 

@@ -12,7 +12,9 @@ import (
 func showPopover() {
 	monthlyResp, err := getMonthlyUsage()
 	if err != nil {
-		log.Printf("Error getting monthly usage: %v", err)
+		if testMode {
+			log.Printf("Error getting monthly usage: %v", err)
+		}
 		return
 	}
 
@@ -21,14 +23,18 @@ func showPopover() {
 	// Create a temporary file with the table content
 	tmpFile, err := os.CreateTemp("", "claude-usage-monthly-*.txt")
 	if err != nil {
-		log.Printf("Error creating temp file: %v", err)
+		if testMode {
+			log.Printf("Error creating temp file: %v", err)
+		}
 		return
 	}
 	defer os.Remove(tmpFile.Name())
 
 	// Write table to temp file
 	if _, err := tmpFile.WriteString(table); err != nil {
-		log.Printf("Error writing to temp file: %v", err)
+		if testMode {
+			log.Printf("Error writing to temp file: %v", err)
+		}
 		return
 	}
 	tmpFile.Close()
@@ -41,7 +47,9 @@ func showPopover() {
 func showDailyPopover() {
 	dailyResp, err := getDailyUsage()
 	if err != nil {
-		log.Printf("Error getting daily usage: %v", err)
+		if testMode {
+			log.Printf("Error getting daily usage: %v", err)
+		}
 		return
 	}
 
@@ -50,14 +58,18 @@ func showDailyPopover() {
 	// Create a temporary file with the table content
 	tmpFile, err := os.CreateTemp("", "claude-usage-daily-*.txt")
 	if err != nil {
-		log.Printf("Error creating temp file: %v", err)
+		if testMode {
+			log.Printf("Error creating temp file: %v", err)
+		}
 		return
 	}
 	defer os.Remove(tmpFile.Name())
 
 	// Write table to temp file
 	if _, err := tmpFile.WriteString(table); err != nil {
-		log.Printf("Error writing to temp file: %v", err)
+		if testMode {
+			log.Printf("Error writing to temp file: %v", err)
+		}
 		return
 	}
 	tmpFile.Close()
@@ -81,7 +93,9 @@ func openPopover(filename string) {
 
 		cmd := exec.Command("osascript", "-e", script)
 		if err := cmd.Run(); err != nil {
-			log.Printf("Error opening popover: %v", err)
+			if testMode {
+				log.Printf("Error opening popover: %v", err)
+			}
 			// Fallback: just open the file normally
 			exec.Command("open", filename).Run()
 		}
