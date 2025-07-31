@@ -25,7 +25,7 @@ curl -fsSL https://raw.githubusercontent.com/redsubmarine/clause-usage/main/inst
 ### 수동 설치
 
 ```bash
-curl -L https://github.com/redsubmarine/clause-usage/releases/download/v1.0.0/claude-usage-macos-arm64 -o claude-usage && chmod +x claude-usage && sudo mv claude-usage /usr/local/bin/
+curl -L https://github.com/redsubmarine/clause-usage/releases/download/v1.0.1/claude-usage-macos-arm64 -o claude-usage && chmod +x claude-usage && sudo mv claude-usage /usr/local/bin/
 ```
 
 설치 후 터미널에서 `claude-usage` 명령으로 실행하거나, Finder에서 애플리케이션을 찾아 실행할 수 있습니다.

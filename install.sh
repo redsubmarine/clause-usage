@@ -7,7 +7,7 @@ echo "🚀 Installing Claude Usage Menu Bar App..."
 # Detect architecture
 ARCH=$(uname -m)
 if [[ "$ARCH" == "arm64" ]]; then
-    BINARY_URL="https://github.com/redsubmarine/clause-usage/releases/download/v1.0.0/claude-usage-macos-arm64"
+    BINARY_URL="https://github.com/redsubmarine/clause-usage/releases/download/v1.0.1/claude-usage-macos-arm64"
     echo "✅ Detected Apple Silicon Mac"
 else
     echo "❌ This installer currently supports Apple Silicon Macs only"
