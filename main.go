@@ -5,6 +5,8 @@ import (
 	"io"
 	"log"
 	"os"
+	"os/exec"
+	"syscall"
 	"time"
 
 	"github.com/getlantern/systray"
@@ -20,10 +22,43 @@ func main() {
 		return
 	}
 
-	// Disable logging for normal operation (run silently in background)
-	log.SetOutput(io.Discard)
+	// Check if already running as daemon
+	if len(os.Args) > 1 && os.Args[1] == "--daemon" {
+		// Disable logging for daemon operation
+		log.SetOutput(io.Discard)
+		systray.Run(onReady, onExit)
+		return
+	}
 
-	systray.Run(onReady, onExit)
+	// Fork to background
+	daemonize()
+}
+
+func daemonize() {
+	// Get current executable path
+	executable, err := os.Executable()
+	if err != nil {
+		log.Fatalf("Failed to get executable path: %v", err)
+	}
+
+	// Start the daemon process
+	cmd := exec.Command(executable, "--daemon")
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		Setpgid: true,
+	}
+	
+	// Redirect stdin, stdout, stderr to /dev/null
+	cmd.Stdin = nil
+	cmd.Stdout = nil
+	cmd.Stderr = nil
+
+	if err := cmd.Start(); err != nil {
+		log.Fatalf("Failed to start daemon: %v", err)
+	}
+
+	fmt.Printf("Claude Usage started in background (PID: %d)\n", cmd.Process.Pid)
+	fmt.Println("Use 'claude-usage test' to test the application")
+	fmt.Println("To stop: pkill claude-usage")
 }
 
 func runTest() {
