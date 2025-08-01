@@ -22,6 +22,7 @@ func main() {
 		return
 	}
 
+
 	// Check if already running as daemon
 	if len(os.Args) > 1 && os.Args[1] == "--daemon" {
 		// Disable logging for daemon operation
@@ -34,6 +35,7 @@ func main() {
 	daemonize()
 }
 
+
 func daemonize() {
 	// Get current executable path
 	executable, err := os.Executable()
@@ -41,24 +43,40 @@ func daemonize() {
 		log.Fatalf("Failed to get executable path: %v", err)
 	}
 
-	// Start the daemon process
-	cmd := exec.Command(executable, "--daemon")
-	cmd.SysProcAttr = &syscall.SysProcAttr{
+	// Start daemon process
+	cmd1 := exec.Command(executable, "--daemon")
+	cmd1.SysProcAttr = &syscall.SysProcAttr{
 		Setpgid: true,
 	}
 	
-	// Redirect stdin, stdout, stderr to /dev/null
-	cmd.Stdin = nil
-	cmd.Stdout = nil
-	cmd.Stderr = nil
+	// Redirect all I/O to /dev/null
+	devNull, err := os.OpenFile("/dev/null", os.O_RDWR, 0)
+	if err != nil {
+		log.Fatalf("Failed to open /dev/null: %v", err)
+	}
+	
+	cmd1.Stdin = devNull
+	cmd1.Stdout = devNull
+	cmd1.Stderr = devNull
 
-	if err := cmd.Start(); err != nil {
-		log.Fatalf("Failed to start daemon: %v", err)
+	if err := cmd1.Start(); err != nil {
+		devNull.Close()
+		log.Fatalf("Failed to start daemon process: %v", err)
 	}
 
-	fmt.Printf("Claude Usage started in background (PID: %d)\n", cmd.Process.Pid)
+	// Release the process immediately so it becomes orphaned
+	if err := cmd1.Process.Release(); err != nil {
+		log.Printf("Warning: failed to release process: %v", err)
+	}
+	
+	devNull.Close()
+
+	fmt.Printf("Claude Usage started in background\n")
 	fmt.Println("Use 'claude-usage test' to test the application")
 	fmt.Println("To stop: pkill claude-usage")
+	
+	// Exit parent immediately
+	os.Exit(0)
 }
 
 func runTest() {
