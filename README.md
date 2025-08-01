@@ -25,7 +25,7 @@ curl -fsSL https://raw.githubusercontent.com/redsubmarine/clause-usage/main/inst
 ### 수동 설치
 
 ```bash
-curl -L https://github.com/redsubmarine/clause-usage/releases/download/v1.0.2/claude-usage-macos-arm64 -o claude-usage && chmod +x claude-usage && sudo mv claude-usage /usr/local/bin/
+curl -L https://github.com/redsubmarine/clause-usage/releases/download/v1.0.3/claude-usage-macos-arm64 -o claude-usage && chmod +x claude-usage && sudo mv claude-usage /usr/local/bin/
 ```
 
 ## 사용법
